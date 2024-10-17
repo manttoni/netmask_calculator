@@ -1,2 +1,2 @@
 all:
-	cc -g -Wall -Werror -Wextra *.c libft/libft.a
+	cc -g -Wall -Werror -Wextra *.c libft/libft.a -o calculator

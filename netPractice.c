@@ -58,6 +58,27 @@ void	print_ip(char *name, int *ip)
 	print_binary(ip);
 }
 
+int	get_cidr(int *mask)
+{
+	int	cidr;
+	int	octet;
+	int	bit;
+
+	cidr = 32;
+	for (int i = 3; i >= 0; i--)
+	{
+		octet = mask[i];
+		bit = 7;
+		while ((octet & 1) == 0 && bit >= 0)
+		{
+			bit--;
+			octet = octet >> 1;
+			cidr--;
+		}
+	}
+	return cidr;
+}
+
 int	main(int argc, char **argv)
 {
 	int	*ip;
@@ -74,6 +95,7 @@ int	main(int argc, char **argv)
 	network_address = get_nwaddr(ip, mask);
 	print_ip("ip address:     ", ip);
 	print_ip("mask:           ", mask);
+	printf("/%d\n", get_cidr(mask));
 	print_ip("network address:", network_address);
 	free(mask);
 	free(ip);

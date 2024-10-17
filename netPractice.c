@@ -79,11 +79,30 @@ int	get_cidr(int *mask)
 	return cidr;
 }
 
+int	*get_bcaddr(int *ip, int cidr)
+{
+	int	*bcaddr;
+
+	bcaddr = malloc(4 * sizeof(int));
+	for (int i = 0; i < 4; i++)
+	{
+		bcaddr[i] = ip[i];
+		for (int bit = 7; bit >= 0; bit--)
+		{
+			if (cidr <= 0)
+				bcaddr[i] |= (1 << bit);
+			cidr--;
+		}
+	}
+	return bcaddr;
+}
+
 int	main(int argc, char **argv)
 {
 	int	*ip;
 	int	*mask;
 	int	*network_address;
+	int	*broadcast_address;
 
 	if (argc != 3)
 	{
@@ -93,12 +112,15 @@ int	main(int argc, char **argv)
 	ip = int_array(ft_split(argv[1], '.'));
 	mask = int_array(ft_split(argv[2], '.'));
 	network_address = get_nwaddr(ip, mask);
-	print_ip("ip address:     ", ip);
-	print_ip("mask:           ", mask);
+	broadcast_address = get_bcaddr(ip, get_cidr(mask));
+	print_ip("ip address:       ", ip);
+	print_ip("mask:             ", mask);
 	printf("/%d\n", get_cidr(mask));
-	print_ip("network address:", network_address);
+	print_ip("network address:  ", network_address);
+	print_ip("broadcast address:", broadcast_address);
 	free(mask);
 	free(ip);
 	free(network_address);
+	free(broadcast_address);
 	return 0;
 }

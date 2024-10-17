@@ -118,6 +118,12 @@ int	main(int argc, char **argv)
 	printf("/%d\n", get_cidr(mask));
 	print_ip("network address:  ", network_address);
 	print_ip("broadcast address:", broadcast_address);
+	network_address[3]++;
+	print_ip("host min:         ", network_address);
+	network_address[3]--;
+	broadcast_address[3]--;
+	print_ip("host max:         ", broadcast_address);
+	broadcast_address[3]++;
 	free(mask);
 	free(ip);
 	free(network_address);
